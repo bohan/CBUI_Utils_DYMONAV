@@ -44,9 +44,22 @@ var dymonav = {
 		var b_width = this.GetBoundaryWidth(), n_width = this.GetNavWidth();
 		return (n_width < b_width) ? true : false;
 	},
+	SetNavigationEvents : function() {
+		n = this.opts.nav, f = this.opts.next_btn, b = this.opts.prev_btn, c = n.children('li'), w = 0;
+		c.each(function(ele, i){w += $(i).width();})
+		f.click(function() {
+			if (parseInt(n.css('left')) > parseInt(-w)) {
+				n.animate({'left' : '-='+w/3+'px'}, 1000);
+			}
+			b.fadeIn();
+		});
+		b.click(function(){
+			n.animate({'left' : '0'}, 1000);
+		});
+	},
 	ToggleNavigationSlider: function() {
 		b = this.IsNavigationWidthLessThanBoundaryWidth();
-		if(!b) { this.opts.arrows.parent().find('#next').show(); }
+		if(!b) { this.opts.arrows.parent().find('#next').show(); this.SetNavigationEvents(); }
 		else { this.opts.arrows.hide(); }
 		// return "cool exit!";
 	},
